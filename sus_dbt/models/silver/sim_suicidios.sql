@@ -5,7 +5,7 @@ SELECT
     CAUSABAS                                        AS cid_causa,
     SUBSTR(DTOBITO, 5, 4)                           AS ano,
     SUBSTR(DTOBITO, 3, 2)                           AS mes,
-    CODMUNOCOR                                      AS cod_municipio,
+    TRIM(CODMUNOCOR)                                AS cod_municipio,
     SEXO                                            AS sexo,
     IDADE                                           AS idade_raw,
     RACACOR                                         AS raca_cor,
