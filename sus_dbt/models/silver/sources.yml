@@ -13,3 +13,11 @@ sources:
         description: "Dados brutos do SIM - óbitos SP"
       - name: raas_psicossocial
         description: "Dados brutos do RAAS - atendimentos psicossociais SP"
+      - name: censo_populacao
+        description: "Censo 2022 - população total por município SP"
+      - name: censo_raca_cor
+        description: "Censo 2022 - população por raça/cor por município SP"
+      - name: censo_instrucao
+        description: "Censo 2022 - nível de instrução por município SP"
+      - name: censo_favelas
+        description: "Censo 2022 - domicílios em favelas por município SP"
