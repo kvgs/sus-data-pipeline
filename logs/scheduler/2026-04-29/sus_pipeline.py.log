@@ -1,0 +1,28 @@
+[2026-04-29T12:21:47.832+0000] {processor.py:161} INFO - Started process (PID=184) to work on /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:21:47.843+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/sus_pipeline.py for tasks to queue
+[2026-04-29T12:21:47.871+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:21:47.859+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:21:48.282+0000] {processor.py:840} INFO - DAG(s) 'sus_pipeline' retrieved from /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:21:49.288+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:21:49.287+0000] {dag.py:3036} INFO - Sync 1 DAGs
+[2026-04-29T12:21:49.451+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:21:49.450+0000] {dag.py:3823} INFO - Setting next_dagrun for sus_pipeline to 2026-03-01 00:00:00+00:00, run_after=2026-04-01 00:00:00+00:00
+[2026-04-29T12:21:49.544+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/sus_pipeline.py took 1.813 seconds
+[2026-04-29T12:22:20.113+0000] {processor.py:161} INFO - Started process (PID=189) to work on /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:22:20.125+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/sus_pipeline.py for tasks to queue
+[2026-04-29T12:22:20.132+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:22:20.129+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:22:20.326+0000] {processor.py:840} INFO - DAG(s) 'sus_pipeline' retrieved from /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:22:20.629+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:22:20.628+0000] {dag.py:3036} INFO - Sync 1 DAGs
+[2026-04-29T12:22:20.939+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:22:20.938+0000] {dag.py:3823} INFO - Setting next_dagrun for sus_pipeline to 2026-03-01 00:00:00+00:00, run_after=2026-04-01 00:00:00+00:00
+[2026-04-29T12:22:21.065+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/sus_pipeline.py took 0.996 seconds
+[2026-04-29T12:22:51.278+0000] {processor.py:161} INFO - Started process (PID=202) to work on /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:22:51.280+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/sus_pipeline.py for tasks to queue
+[2026-04-29T12:22:51.281+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:22:51.281+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:22:51.308+0000] {processor.py:840} INFO - DAG(s) 'sus_pipeline' retrieved from /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:22:51.365+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:22:51.365+0000] {dag.py:3036} INFO - Sync 1 DAGs
+[2026-04-29T12:22:51.423+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:22:51.423+0000] {dag.py:3823} INFO - Setting next_dagrun for sus_pipeline to 2026-04-01 00:00:00+00:00, run_after=2026-05-01 00:00:00+00:00
+[2026-04-29T12:22:51.469+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/sus_pipeline.py took 0.197 seconds
+[2026-04-29T12:23:21.577+0000] {processor.py:161} INFO - Started process (PID=211) to work on /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:23:21.579+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/sus_pipeline.py for tasks to queue
+[2026-04-29T12:23:21.581+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:23:21.580+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:23:21.606+0000] {processor.py:840} INFO - DAG(s) 'sus_pipeline' retrieved from /opt/airflow/dags/sus_pipeline.py
+[2026-04-29T12:23:21.664+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:23:21.664+0000] {dag.py:3036} INFO - Sync 1 DAGs
+[2026-04-29T12:23:21.710+0000] {logging_mixin.py:188} INFO - [2026-04-29T12:23:21.710+0000] {dag.py:3823} INFO - Setting next_dagrun for sus_pipeline to 2026-04-01 00:00:00+00:00, run_after=2026-05-01 00:00:00+00:00
+[2026-04-29T12:23:21.755+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/sus_pipeline.py took 0.186 seconds
