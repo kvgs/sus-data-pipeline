@@ -1,0 +1,94 @@
+[2026-04-29T13:49:01.350+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sus_pipeline.baixar_dados_datasus manual__2026-04-29T13:48:56.415725+00:00 [queued]>
+[2026-04-29T13:49:01.355+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sus_pipeline.baixar_dados_datasus manual__2026-04-29T13:48:56.415725+00:00 [queued]>
+[2026-04-29T13:49:01.355+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2026-04-29T13:49:01.366+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): baixar_dados_datasus> on 2026-04-29 13:48:56.415725+00:00
+[2026-04-29T13:49:01.373+0000] {standard_task_runner.py:60} INFO - Started process 338 to run task
+[2026-04-29T13:49:01.381+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sus_pipeline', 'baixar_dados_datasus', 'manual__2026-04-29T13:48:56.415725+00:00', '--job-id', '10', '--raw', '--subdir', 'DAGS_FOLDER/sus_pipeline.py', '--cfg-path', '/tmp/tmpejuwuqih']
+[2026-04-29T13:49:01.383+0000] {standard_task_runner.py:88} INFO - Job 10: Subtask baixar_dados_datasus
+[2026-04-29T13:49:01.423+0000] {task_command.py:423} INFO - Running <TaskInstance: sus_pipeline.baixar_dados_datasus manual__2026-04-29T13:48:56.415725+00:00 [running]> on host a7e6afc000b8
+[2026-04-29T13:49:01.720+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='kelli' AIRFLOW_CTX_DAG_ID='sus_pipeline' AIRFLOW_CTX_TASK_ID='baixar_dados_datasus' AIRFLOW_CTX_EXECUTION_DATE='2026-04-29T13:48:56.415725+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-29T13:48:56.415725+00:00'
+[2026-04-29T13:49:01.722+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.10/site-packages/***/utils/context.py:315 AirflowContextDeprecationWarning: Accessing 'execution_date' from the template is deprecated and will be removed in a future version. Please use 'data_interval_start' or 'logical_date' instead.
+[2026-04-29T13:49:01.722+0000] {logging_mixin.py:188} INFO - Baixando dados do DATASUS para o ano 2026...
+[2026-04-29T13:49:01.791+0000] {logging_mixin.py:188} WARNING -   0%|          | 0/2 [00:00<?, ?it/s]
+[2026-04-29T13:49:01.792+0000] {logging_mixin.py:188} WARNING -   0%|          | 0.00/19.0M [00:00<?, ?B/s]
+[2026-04-29T13:49:01.792+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:   0%|          | 0.00/19.0M [00:00<?, ?B/s]
+[2026-04-29T13:49:02.028+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:   0%|          | 5.71k/19.0M [00:00<13:01, 24.3kB/s]
+[2026-04-29T13:49:02.132+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:   1%|1         | 214k/19.0M [00:00<00:23, 787kB/s]  
+[2026-04-29T13:49:02.239+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:   5%|4         | 926k/19.0M [00:00<00:06, 2.92MB/s]
+[2026-04-29T13:49:02.345+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  10%|9         | 1.84M/19.0M [00:00<00:03, 4.85MB/s]
+[2026-04-29T13:49:02.454+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  15%|#4        | 2.76M/19.0M [00:00<00:02, 6.03MB/s]
+[2026-04-29T13:49:02.560+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  19%|#9        | 3.68M/19.0M [00:00<00:02, 6.88MB/s]
+[2026-04-29T13:49:02.660+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  24%|##4       | 4.64M/19.0M [00:00<00:01, 7.70MB/s]
+[2026-04-29T13:49:02.792+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  29%|##8       | 5.46M/19.0M [00:00<00:01, 7.15MB/s]
+[2026-04-29T13:49:02.911+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  33%|###2      | 6.20M/19.0M [00:01<00:01, 6.88MB/s]
+[2026-04-29T13:49:03.020+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  37%|###6      | 7.02M/19.0M [00:01<00:01, 7.05MB/s]
+[2026-04-29T13:49:03.129+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  42%|####1     | 7.94M/19.0M [00:01<00:01, 7.45MB/s]
+[2026-04-29T13:49:03.238+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  47%|####7     | 8.99M/19.0M [00:01<00:01, 8.10MB/s]
+[2026-04-29T13:49:03.381+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  52%|#####1    | 9.81M/19.0M [00:01<00:01, 7.27MB/s]
+[2026-04-29T13:49:03.487+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  57%|#####6    | 10.8M/19.0M [00:01<00:01, 7.88MB/s]
+[2026-04-29T13:49:03.620+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  62%|######1   | 11.7M/19.0M [00:01<00:00, 7.57MB/s]
+[2026-04-29T13:49:03.722+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  67%|######6   | 12.7M/19.0M [00:01<00:00, 8.10MB/s]
+[2026-04-29T13:49:03.859+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  71%|#######1  | 13.6M/19.0M [00:02<00:00, 7.43MB/s]
+[2026-04-29T13:49:03.964+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  76%|#######5  | 14.4M/19.0M [00:02<00:00, 7.66MB/s]
+[2026-04-29T13:49:04.098+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  80%|########  | 15.2M/19.0M [00:02<00:00, 7.06MB/s]
+[2026-04-29T13:49:04.213+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  84%|########4 | 16.0M/19.0M [00:02<00:00, 7.01MB/s]
+[2026-04-29T13:49:04.321+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  90%|########9 | 17.0M/19.0M [00:02<00:00, 7.73MB/s]
+[2026-04-29T13:49:04.422+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:  95%|#########4| 18.0M/19.0M [00:02<00:00, 8.29MB/s]
+[2026-04-29T13:49:04.523+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc: 100%|#########9| 18.9M/19.0M [00:02<00:00, 8.53MB/s]
+[2026-04-29T13:49:04.535+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbc:   0%|          | 0.00/1.00 [00:00<?, ?B/s]          
+[2026-04-29T13:49:04.535+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbf:   0%|          | 0.00/1.00 [00:00<?, ?B/s]
+[2026-04-29T13:49:11.407+0000] {logging_mixin.py:188} WARNING - RDSP2601.dbf:   0%|          | 0.00/832k [00:00<?, ?B/s]
+[2026-04-29T13:49:11.408+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:   0%|          | 0.00/832k [00:00<?, ?B/s]
+[2026-04-29T13:49:24.090+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:   0%|          | 0.00/832k [00:12<?, ?B/s]
+[2026-04-29T13:49:29.368+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:   4%|3         | 30.0k/832k [00:17<08:00, 1.67kB/s]
+[2026-04-29T13:49:44.146+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:   4%|3         | 30.0k/832k [00:32<08:00, 1.67kB/s]
+[2026-04-29T13:49:48.150+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:   7%|7         | 60.0k/832k [00:36<07:54, 1.63kB/s]
+[2026-04-29T13:49:59.684+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:  11%|#         | 90.0k/832k [00:48<06:18, 1.96kB/s]
+[2026-04-29T13:50:05.303+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:  14%|#4        | 120k/832k [00:53<04:32, 2.62kB/s] 
+[2026-04-29T13:50:09.950+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:  18%|#8        | 150k/832k [00:58<03:24, 3.33kB/s]
+[2026-04-29T13:50:13.532+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:  22%|##1       | 180k/832k [01:02<02:35, 4.19kB/s]
+[2026-04-29T13:50:17.293+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:  25%|##5       | 210k/832k [01:05<02:05, 4.96kB/s]
+[2026-04-29T13:50:21.427+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:  29%|##8       | 240k/832k [01:10<01:47, 5.51kB/s]
+[2026-04-29T13:50:23.619+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet: 100%|##########| 832k/832k [01:12<00:00, 46.5kB/s]
+[2026-04-29T13:50:23.864+0000] {logging_mixin.py:188} WARNING - RDSP2601.parquet:   0%|          | 0.00/18.1M [00:00<?, ?B/s]       
+[2026-04-29T13:50:23.865+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:   0%|          | 0.00/18.1M [00:00<?, ?B/s]    
+[2026-04-29T13:50:24.334+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:   0%|          | 13.9k/18.1M [00:00<10:12, 29.6kB/s]
+[2026-04-29T13:50:24.434+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:   1%|1         | 231k/18.1M [00:00<00:33, 528kB/s]  
+[2026-04-29T13:50:24.537+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:   5%|4         | 863k/18.1M [00:00<00:08, 1.96MB/s]
+[2026-04-29T13:50:24.653+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  11%|#         | 1.91M/18.1M [00:00<00:04, 4.02MB/s]
+[2026-04-29T13:50:24.760+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  15%|#4        | 2.70M/18.1M [00:00<00:03, 4.94MB/s]
+[2026-04-29T13:50:27.394+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  19%|#8        | 3.44M/18.1M [00:03<00:20, 717kB/s] 
+[2026-04-29T13:50:27.508+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  23%|##2       | 4.14M/18.1M [00:03<00:13, 1.00MB/s]
+[2026-04-29T13:50:27.608+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  27%|##7       | 4.93M/18.1M [00:03<00:09, 1.44MB/s]
+[2026-04-29T13:50:27.709+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  32%|###2      | 5.84M/18.1M [00:03<00:05, 2.06MB/s]
+[2026-04-29T13:50:27.832+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  37%|###6      | 6.69M/18.1M [00:03<00:04, 2.67MB/s]
+[2026-04-29T13:50:27.932+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  42%|####1     | 7.57M/18.1M [00:04<00:03, 3.45MB/s]
+[2026-04-29T13:50:28.039+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  46%|####6     | 8.40M/18.1M [00:04<00:02, 4.15MB/s]
+[2026-04-29T13:50:28.147+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  51%|#####     | 9.18M/18.1M [00:04<00:01, 4.75MB/s]
+[2026-04-29T13:50:28.251+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  55%|#####5    | 9.99M/18.1M [00:04<00:01, 5.36MB/s]
+[2026-04-29T13:50:28.353+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  60%|######    | 10.9M/18.1M [00:04<00:01, 6.14MB/s]
+[2026-04-29T13:50:28.453+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  65%|######4   | 11.8M/18.1M [00:04<00:00, 6.79MB/s]
+[2026-04-29T13:50:28.567+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  70%|######9   | 12.7M/18.1M [00:04<00:00, 7.06MB/s]
+[2026-04-29T13:50:28.674+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  75%|#######4  | 13.5M/18.1M [00:04<00:00, 7.31MB/s]
+[2026-04-29T13:50:28.813+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  79%|#######8  | 14.3M/18.1M [00:04<00:00, 6.81MB/s]
+[2026-04-29T13:50:28.954+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  83%|########3 | 15.1M/18.1M [00:05<00:00, 6.30MB/s]
+[2026-04-29T13:50:29.072+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  87%|########6 | 15.7M/18.1M [00:05<00:00, 6.14MB/s]
+[2026-04-29T13:50:29.177+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  90%|######### | 16.4M/18.1M [00:05<00:00, 6.14MB/s]
+[2026-04-29T13:50:29.277+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  94%|#########4| 17.0M/18.1M [00:05<00:00, 6.27MB/s]
+[2026-04-29T13:50:29.382+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:  98%|#########8| 17.8M/18.1M [00:05<00:00, 6.63MB/s]
+[2026-04-29T13:50:29.428+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbc:   0%|          | 0.00/1.00 [00:00<?, ?B/s]          
+[2026-04-29T13:50:29.429+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbf:   0%|          | 0.00/1.00 [00:00<?, ?B/s]
+[2026-04-29T13:50:30.537+0000] {logging_mixin.py:188} WARNING - RDSP2602.dbf:   0%|          | 0.00/801k [00:00<?, ?B/s]
+[2026-04-29T13:50:30.537+0000] {logging_mixin.py:188} WARNING - RDSP2602.parquet:   0%|          | 0.00/801k [00:00<?, ?B/s]
+[2026-04-29T13:50:48.932+0000] {logging_mixin.py:188} WARNING - RDSP2602.parquet:  15%|#4        | 120k/801k [00:18<01:44, 6.53kB/s]
+[2026-04-29T13:50:50.299+0000] {logging_mixin.py:188} WARNING - RDSP2602.parquet:  19%|#8        | 150k/801k [00:19<01:25, 7.59kB/s]
+[2026-04-29T13:50:54.378+0000] {logging_mixin.py:188} WARNING - RDSP2602.parquet:  22%|##2       | 180k/801k [00:23<01:22, 7.54kB/s]
+[2026-04-29T13:50:58.578+0000] {logging_mixin.py:188} WARNING - RDSP2602.parquet:  26%|##6       | 210k/801k [00:28<01:19, 7.44kB/s]
+[2026-04-29T13:51:06.105+0000] {logging_mixin.py:188} WARNING - RDSP2602.parquet:  30%|##9       | 240k/801k [00:35<01:32, 6.09kB/s]
+[2026-04-29T13:51:11.686+0000] {logging_mixin.py:188} WARNING - RDSP2602.parquet: 100%|##########| 801k/801k [00:41<00:00, 33.8kB/s]
+[2026-04-29T13:51:11.961+0000] {logging_mixin.py:188} WARNING - RDSP2602.parquet: 100%|##########| 801k/801k [00:41<00:00, 19.3kB/s]
+[2026-04-29T13:51:11.962+0000] {logging_mixin.py:188} INFO - Download concluído! 2 arquivos baixados.
+[2026-04-29T13:51:11.963+0000] {python.py:201} INFO - Done. Returned value was: 2
+[2026-04-29T13:51:12.065+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sus_pipeline, task_id=baixar_dados_datasus, execution_date=20260429T134856, start_date=20260429T134901, end_date=20260429T135112
+[2026-04-29T13:51:12.300+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2026-04-29T13:51:17.104+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check

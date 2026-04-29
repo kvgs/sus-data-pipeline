@@ -1,0 +1,15 @@
+[2026-04-29T16:00:29.705+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sus_pipeline.validar_dados manual__2026-04-29T16:00:21.238632+00:00 [queued]>
+[2026-04-29T16:00:29.712+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sus_pipeline.validar_dados manual__2026-04-29T16:00:21.238632+00:00 [queued]>
+[2026-04-29T16:00:29.712+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2026-04-29T16:00:29.723+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): validar_dados> on 2026-04-29 16:00:21.238632+00:00
+[2026-04-29T16:00:29.731+0000] {standard_task_runner.py:60} INFO - Started process 6710 to run task
+[2026-04-29T16:00:29.734+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sus_pipeline', 'validar_dados', 'manual__2026-04-29T16:00:21.238632+00:00', '--job-id', '26', '--raw', '--subdir', 'DAGS_FOLDER/sus_pipeline.py', '--cfg-path', '/tmp/tmp8jhr6hp7']
+[2026-04-29T16:00:29.736+0000] {standard_task_runner.py:88} INFO - Job 26: Subtask validar_dados
+[2026-04-29T16:00:29.781+0000] {task_command.py:423} INFO - Running <TaskInstance: sus_pipeline.validar_dados manual__2026-04-29T16:00:21.238632+00:00 [running]> on host a7e6afc000b8
+[2026-04-29T16:00:29.858+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='kelli' AIRFLOW_CTX_DAG_ID='sus_pipeline' AIRFLOW_CTX_TASK_ID='validar_dados' AIRFLOW_CTX_EXECUTION_DATE='2026-04-29T16:00:21.238632+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-29T16:00:21.238632+00:00'
+[2026-04-29T16:00:29.859+0000] {logging_mixin.py:188} INFO - Validando dados...
+[2026-04-29T16:02:28.296+0000] {logging_mixin.py:188} INFO - Validação concluída! 20,962,616 registros válidos em 98 arquivos.
+[2026-04-29T16:02:28.462+0000] {python.py:201} INFO - Done. Returned value was: 20962616
+[2026-04-29T16:02:28.691+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sus_pipeline, task_id=validar_dados, execution_date=20260429T160021, start_date=20260429T160029, end_date=20260429T160228
+[2026-04-29T16:02:28.881+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2026-04-29T16:02:29.001+0000] {taskinstance.py:3280} INFO - 1 downstream tasks scheduled from follow-on schedule check

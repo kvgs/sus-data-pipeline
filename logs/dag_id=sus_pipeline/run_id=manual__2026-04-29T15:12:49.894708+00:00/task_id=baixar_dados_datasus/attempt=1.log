@@ -1,0 +1,18 @@
+[2026-04-29T15:12:52.673+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sus_pipeline.baixar_dados_datasus manual__2026-04-29T15:12:49.894708+00:00 [queued]>
+[2026-04-29T15:12:52.679+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sus_pipeline.baixar_dados_datasus manual__2026-04-29T15:12:49.894708+00:00 [queued]>
+[2026-04-29T15:12:52.679+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2026-04-29T15:12:52.687+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): baixar_dados_datasus> on 2026-04-29 15:12:49.894708+00:00
+[2026-04-29T15:12:52.697+0000] {standard_task_runner.py:60} INFO - Started process 4500 to run task
+[2026-04-29T15:12:52.700+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sus_pipeline', 'baixar_dados_datasus', 'manual__2026-04-29T15:12:49.894708+00:00', '--job-id', '22', '--raw', '--subdir', 'DAGS_FOLDER/sus_pipeline.py', '--cfg-path', '/tmp/tmp2kwag2ll']
+[2026-04-29T15:12:52.703+0000] {standard_task_runner.py:88} INFO - Job 22: Subtask baixar_dados_datasus
+[2026-04-29T15:12:52.740+0000] {task_command.py:423} INFO - Running <TaskInstance: sus_pipeline.baixar_dados_datasus manual__2026-04-29T15:12:49.894708+00:00 [running]> on host a7e6afc000b8
+[2026-04-29T15:12:53.066+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='kelli' AIRFLOW_CTX_DAG_ID='sus_pipeline' AIRFLOW_CTX_TASK_ID='baixar_dados_datasus' AIRFLOW_CTX_EXECUTION_DATE='2026-04-29T15:12:49.894708+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-29T15:12:49.894708+00:00'
+[2026-04-29T15:12:53.066+0000] {logging_mixin.py:188} INFO - Baixando dados do DATASUS para os anos [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]...
+[2026-04-29T15:12:53.142+0000] {logging_mixin.py:188} WARNING -   0%|          | 0/96 [00:00<?, ?it/s]
+[2026-04-29T15:12:53.245+0000] {logging_mixin.py:188} WARNING - 17268103it [00:00, 373228057.33it/s]  
+[2026-04-29T15:12:53.271+0000] {logging_mixin.py:188} WARNING - 18215908it [00:00, 140884467.90it/s]
+[2026-04-29T15:12:53.271+0000] {logging_mixin.py:188} INFO - Download concluído! 96 arquivos baixados.
+[2026-04-29T15:12:53.272+0000] {python.py:201} INFO - Done. Returned value was: 96
+[2026-04-29T15:12:53.292+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sus_pipeline, task_id=baixar_dados_datasus, execution_date=20260429T151249, start_date=20260429T151252, end_date=20260429T151253
+[2026-04-29T15:12:53.314+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2026-04-29T15:12:53.337+0000] {taskinstance.py:3280} INFO - 1 downstream tasks scheduled from follow-on schedule check

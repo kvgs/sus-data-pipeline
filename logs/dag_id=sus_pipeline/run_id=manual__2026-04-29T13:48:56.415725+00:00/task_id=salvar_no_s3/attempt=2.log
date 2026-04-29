@@ -1,0 +1,69 @@
+[2026-04-29T13:56:41.650+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sus_pipeline.salvar_no_s3 manual__2026-04-29T13:48:56.415725+00:00 [queued]>
+[2026-04-29T13:56:41.686+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sus_pipeline.salvar_no_s3 manual__2026-04-29T13:48:56.415725+00:00 [queued]>
+[2026-04-29T13:56:41.686+0000] {taskinstance.py:2170} INFO - Starting attempt 2 of 2
+[2026-04-29T13:56:41.731+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): salvar_no_s3> on 2026-04-29 13:48:56.415725+00:00
+[2026-04-29T13:56:41.743+0000] {standard_task_runner.py:60} INFO - Started process 544 to run task
+[2026-04-29T13:56:41.766+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sus_pipeline', 'salvar_no_s3', 'manual__2026-04-29T13:48:56.415725+00:00', '--job-id', '13', '--raw', '--subdir', 'DAGS_FOLDER/sus_pipeline.py', '--cfg-path', '/tmp/tmp255jvumu']
+[2026-04-29T13:56:41.788+0000] {standard_task_runner.py:88} INFO - Job 13: Subtask salvar_no_s3
+[2026-04-29T13:56:41.987+0000] {task_command.py:423} INFO - Running <TaskInstance: sus_pipeline.salvar_no_s3 manual__2026-04-29T13:48:56.415725+00:00 [running]> on host a7e6afc000b8
+[2026-04-29T13:56:43.413+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='kelli' AIRFLOW_CTX_DAG_ID='sus_pipeline' AIRFLOW_CTX_TASK_ID='salvar_no_s3' AIRFLOW_CTX_EXECUTION_DATE='2026-04-29T13:48:56.415725+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-29T13:48:56.415725+00:00'
+[2026-04-29T13:56:43.414+0000] {logging_mixin.py:188} INFO - Enviando dados para o S3...
+[2026-04-29T13:56:45.676+0000] {taskinstance.py:2698} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/operators/python.py", line 199, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/operators/python.py", line 216, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/sus_pipeline.py", line 71, in salvar_no_s3
+    s3.upload_file(arquivo, BUCKET, chave)
+  File "/home/airflow/.local/lib/python3.10/site-packages/boto3/s3/inject.py", line 145, in upload_file
+    return transfer.upload_file(
+  File "/home/airflow/.local/lib/python3.10/site-packages/boto3/s3/transfer.py", line 371, in upload_file
+    future.result()
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/futures.py", line 103, in result
+    return self._coordinator.result()
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/futures.py", line 266, in result
+    raise self._exception
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/tasks.py", line 139, in __call__
+    return self._execute_main(kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/tasks.py", line 162, in _execute_main
+    return_value = self._main(**kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/upload.py", line 764, in _main
+    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/client.py", line 553, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/client.py", line 972, in _make_api_call
+    handler, event_response = self.meta.events.emit_until_response(
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/hooks.py", line 416, in emit_until_response
+    return self._emitter.emit_until_response(aliased_event_name, **kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/hooks.py", line 271, in emit_until_response
+    responses = self._emit(event_name, kwargs, stop_on_response=True)
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/hooks.py", line 239, in _emit
+    response = handler(**kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/utils.py", line 3292, in conditionally_calculate_checksum
+    conditionally_calculate_md5(params, **kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/utils.py", line 3331, in conditionally_calculate_md5
+    md5_digest = calculate_md5(body, **kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/utils.py", line 3249, in calculate_md5
+    binary_md5 = _calculate_md5_from_file(body)
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/utils.py", line 3261, in _calculate_md5_from_file
+    for chunk in iter(lambda: fileobj.read(1024 * 1024), b''):
+  File "/home/airflow/.local/lib/python3.10/site-packages/botocore/utils.py", line 3261, in <lambda>
+    for chunk in iter(lambda: fileobj.read(1024 * 1024), b''):
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/utils.py", line 515, in read
+    data = self._fileobj.read(amount_to_read)
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/upload.py", line 91, in read
+    return self._fileobj.read(amount)
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/utils.py", line 374, in read
+    self._open_if_needed()
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/utils.py", line 365, in _open_if_needed
+    self._fileobj = self._open_function(self._filename, self._mode)
+  File "/home/airflow/.local/lib/python3.10/site-packages/s3transfer/utils.py", line 276, in open
+    return open(filename, mode)
+IsADirectoryError: [Errno 21] Is a directory: '/opt/airflow/data/raw/RDSP2602.parquet'
+[2026-04-29T13:56:45.697+0000] {taskinstance.py:1138} INFO - Marking task as FAILED. dag_id=sus_pipeline, task_id=salvar_no_s3, execution_date=20260429T134856, start_date=20260429T135641, end_date=20260429T135645
+[2026-04-29T13:56:45.713+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 13 for task salvar_no_s3 ([Errno 21] Is a directory: '/opt/airflow/data/raw/RDSP2602.parquet'; 544)
+[2026-04-29T13:56:45.740+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2026-04-29T13:56:48.041+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check
