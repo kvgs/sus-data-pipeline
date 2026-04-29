@@ -11,3 +11,5 @@ sources:
         description: "Dados brutos do CNES - estabelecimentos de saúde SP"
       - name: sim_obitos
         description: "Dados brutos do SIM - óbitos SP"
+      - name: raas_psicossocial
+        description: "Dados brutos do RAAS - atendimentos psicossociais SP"
