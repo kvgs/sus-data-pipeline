@@ -1,24 +1,23 @@
 # 🧠 Pipeline de Dados em Saúde Mental — SUS/SP
 
-Pipeline completo de engenharia de dados para análise de saúde mental no estado de São Paulo, integrando quatro fontes do DATASUS em uma arquitetura moderna com AWS e dbt.
+Pipeline completo de engenharia de dados para análise de saúde mental no estado de São Paulo, integrando seis fontes de dados públicos em uma arquitetura moderna com AWS e dbt.
 
 ## 🏗️ Arquitetura
-
 ```
-DATASUS (SIH + CNES + SIM + RAAS)
-           ↓
-     Python + PySUS
-    (ingestão automatizada)
-           ↓
-     AWS S3 (data lake)
-    raw/sih/ | raw/cnes/ | raw/sim/ | raw/raas/
-           ↓
-     AWS Athena
-    (tabelas externas sobre parquet)
-           ↓
-     dbt (transformação)
-    silver: limpeza e padronização
-    gold: agregações e cruzamentos
+DATASUS + IBGE (fontes)
+↓
+Python + PySUS + requests
+(ingestão automatizada)
+↓
+AWS S3 (data lake)
+raw/sih/ · raw/cnes/ · raw/sim/ · raw/raas/ · raw/censo/ · raw/malha/
+↓
+AWS Athena
+(tabelas externas sobre parquet)
+↓
+dbt (transformação)
+silver: limpeza e padronização
+gold: agregações, cruzamentos e taxas normalizadas
 ```
 
 ## 📊 Fontes de Dados
@@ -29,23 +28,26 @@ DATASUS (SIH + CNES + SIM + RAAS)
 | **CNES** | Estabelecimentos de saúde mental (CAPS, hospitais) | 2018–2025 | snapshot anual |
 | **SIM** | Óbitos por suicídio (CID X60–X84) | 2018–2024 | ~18k óbitos |
 | **RAAS Psicossocial** | Atendimentos ambulatoriais nos CAPS | 2018–2025 | ~33M atendimentos |
+| **Censo 2022 (IBGE)** | População e domicílios em favelas por município | 2022 | 645 municípios SP |
+| **Malha Municipal SP** | Shapefile dos municípios de SP | 2022 | 645 polígonos |
 
 ## 🗂️ Modelos dbt
 
 ### Silver (limpeza e padronização)
 - `sih_internacoes` — internações hospitalares SP (todas)
 - `sih_internacoes_psiquiatria` — filtrado por ESPEC=05 ou CID F
-- `cnes_saude_mental` — estabelecimentos de saúde mental categorizados
+- `cnes_saude_mental` — estabelecimentos categorizados (CAPS, hospitais, serviços)
 - `sim_suicidios` — óbitos por suicídio com método classificado
 - `raas_atendimentos` — atendimentos ambulatoriais psicossociais
+- `censo_municipios` — população e vulnerabilidade por município
 
 ### Gold (tabelas analíticas)
-- `internacoes_por_ano` — internações psiquiátricas agregadas por ano
+- `internacoes_por_ano` — internações psiquiátricas por ano
 - `internacoes_por_cid` — internações por diagnóstico e ano
 - `atendimentos_por_ano` — atendimentos CAPS por município e ano
 - `suicidios_por_ano` — óbitos por suicídio por município e ano
 - `caps_vs_internacoes` — infraestrutura vs volume de internações
-- `saude_mental_municipios` — **cruzamento completo** dos 4 datasets por município e ano
+- `saude_mental_municipios` — **cruzamento completo** com taxas por 100k hab
 
 ## 🔍 Principais Achados
 
@@ -55,10 +57,11 @@ DATASUS (SIH + CNES + SIM + RAAS)
 - **33M atendimentos ambulatoriais** em 2018–2025, com crescimento de 35% no período
 - **~4% dos atendimentos nos CAPS** são de pessoas em situação de rua
 - **Suicídio cresceu 32%** entre 2018 e 2022 (pico de 2.923 casos), com queda gradual nos anos seguintes (2.656 em 2024)
+- **Taxas normalizadas revelam** municípios com alta taxa de internação e baixa cobertura de CAPS — identificando lacunas na rede de saúde mental
 
 ## 🛠️ Stack Tecnológica
 
-- **Linguagem:** Python (PySUS, boto3, pandas)
+- **Linguagem:** Python (PySUS, boto3, pandas, requests, sidrapy)
 - **Cloud:** AWS (S3, Athena, IAM)
 - **Transformação:** dbt-athena
 - **Orquestração:** Apache Airflow (Docker)
@@ -68,8 +71,7 @@ DATASUS (SIH + CNES + SIM + RAAS)
 
 ### Pré-requisitos
 - Python 3.12+
-- AWS CLI configurado
-- Conta AWS com acesso a S3 e Athena
+- AWS CLI configurado com acesso a S3 e Athena
 - WSL2 (Windows) ou Linux
 
 ### Instalação
@@ -77,16 +79,17 @@ DATASUS (SIH + CNES + SIM + RAAS)
 ```bash
 git clone https://github.com/kvgs/sus-data-pipeline
 cd sus-data-pipeline
-pip install pysus boto3 pandas dbt-athena-community
+pip install pysus boto3 pandas requests sidrapy dbt-athena-community
 ```
 
 ### Ingestão
 
 ```bash
-python3 ingest_sih.py    # SIH - internações
-python3 ingest_cnes.py   # CNES - estabelecimentos
-python3 ingest_sim.py    # SIM - óbitos
-python3 ingest_raas.py   # RAAS - atendimentos
+python3 ingest_sih.py    # SIH — internações
+python3 ingest_cnes.py   # CNES — estabelecimentos
+python3 ingest_sim.py    # SIM — óbitos
+python3 ingest_raas.py   # RAAS — atendimentos
+python3 ingest_censo.py  # Censo 2022 — população e vulnerabilidade
 ```
 
 ### Transformação
@@ -97,7 +100,6 @@ dbt run
 ```
 
 ## 📁 Estrutura do Projeto
-
 ```
 sus-data-pipeline/
 ├── dags/                    # DAGs do Airflow
@@ -109,5 +111,6 @@ sus-data-pipeline/
 ├── ingest_cnes.py
 ├── ingest_sim.py
 ├── ingest_raas.py
+├── ingest_censo.py
 └── README.md
 ```
