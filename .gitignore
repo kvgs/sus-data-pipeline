@@ -1,1 +1,4 @@
 awscliv2.zip
+logs/
+models/
+*.log

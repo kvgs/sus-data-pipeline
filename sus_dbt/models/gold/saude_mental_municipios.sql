@@ -85,5 +85,5 @@ LEFT JOIN suicidios s
 LEFT JOIN caps c
     ON i.cod_municipio = c.cod_municipio AND i.ano = c.ano
 LEFT JOIN {{ ref('censo_municipios') }} ce
-    ON CONCAT(i.cod_municipio, '0') = ce.cod_municipio
+    ON i.cod_municipio = SUBSTR(ce.cod_municipio, 1, 6)
 ORDER BY i.ano, i.total_internacoes DESC
