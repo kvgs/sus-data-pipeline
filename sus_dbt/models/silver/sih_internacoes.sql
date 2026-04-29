@@ -2,6 +2,7 @@
 
 SELECT
     N_AIH                                    AS numero_aih,
+    ESPEC                                    AS especialidade,
     ANO_CMPT                                 AS ano,
     MES_CMPT                                 AS mes,
     CNES                                     AS cnes_hospital,
