@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: sus_pipeline
+    database: awsdatacatalog
+    schema: sus_pipeline
+    tables:
+      - name: sih_sp
+        description: "Dados brutos do SIH/DATASUS - internações hospitalares SP"
