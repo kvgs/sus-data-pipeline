@@ -7,3 +7,5 @@ sources:
     tables:
       - name: sih_sp
         description: "Dados brutos do SIH/DATASUS - internações hospitalares SP"
+      - name: cnes_estabelecimentos
+        description: "Dados brutos do CNES - estabelecimentos de saúde SP"
