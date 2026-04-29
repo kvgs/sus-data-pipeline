@@ -54,7 +54,7 @@ DATASUS (SIH + CNES + SIM + RAAS)
 - **Média de internação psiquiátrica caiu** de 18.9 para 14.7 dias (2018–2026) — tendência de desinstitucionalização
 - **33M atendimentos ambulatoriais** em 2018–2025, com crescimento de 35% no período
 - **~4% dos atendimentos nos CAPS** são de pessoas em situação de rua
-- **Suicídio cresceu 32%** entre 2018 e 2022, com pico pós-pandemia
+- **Suicídio cresceu 32%** entre 2018 e 2022 (pico de 2.923 casos), com queda gradual nos anos seguintes (2.656 em 2024)
 
 ## 🛠️ Stack Tecnológica
 
