@@ -64,18 +64,21 @@ SELECT
     COALESCE(c.total_caps, 0)               AS total_caps,
     COALESCE(c.total_hospitais, 0)          AS total_hospitais,
     COALESCE(c.total_equipamentos, 0)       AS total_equipamentos,
-    ce.municipio,
-    COALESCE(ce.populacao_total, 0)         AS populacao_total,
+    -- população por ano (estimativas IBGE)
+    pop.municipio,
+    COALESCE(pop.populacao, 0)              AS populacao_total,
+    -- favelas do censo 2022
     COALESCE(ce.domicilios_favelas, 0)      AS domicilios_favelas,
     COALESCE(ce.pct_domicilios_favelas, 0)  AS pct_domicilios_favelas,
+    -- taxas normalizadas por 100k habitantes
     ROUND(
-        i.total_internacoes * 100000.0 / NULLIF(ce.populacao_total, 0), 2
+        i.total_internacoes * 100000.0 / NULLIF(pop.populacao, 0), 2
     )                                       AS taxa_internacao_100k,
     ROUND(
-        COALESCE(s.total_suicidios, 0) * 100000.0 / NULLIF(ce.populacao_total, 0), 2
+        COALESCE(s.total_suicidios, 0) * 100000.0 / NULLIF(pop.populacao, 0), 2
     )                                       AS taxa_suicidio_100k,
     ROUND(
-        COALESCE(c.total_caps, 0) * 100000.0 / NULLIF(ce.populacao_total, 0), 2
+        COALESCE(c.total_caps, 0) * 100000.0 / NULLIF(pop.populacao, 0), 2
     )                                       AS taxa_caps_100k
 FROM internacoes i
 LEFT JOIN atendimentos a
@@ -84,6 +87,8 @@ LEFT JOIN suicidios s
     ON i.cod_municipio = s.cod_municipio AND i.ano = s.ano
 LEFT JOIN caps c
     ON i.cod_municipio = c.cod_municipio AND i.ano = c.ano
+LEFT JOIN {{ ref('ibge_populacao') }} pop
+    ON i.cod_municipio = pop.cod_municipio AND i.ano = pop.ano
 LEFT JOIN {{ ref('censo_municipios') }} ce
     ON i.cod_municipio = SUBSTR(ce.cod_municipio, 1, 6)
 ORDER BY i.ano, i.total_internacoes DESC

@@ -21,3 +21,5 @@ sources:
         description: "Censo 2022 - nível de instrução por município SP"
       - name: censo_favelas
         description: "Censo 2022 - domicílios em favelas por município SP"
+      - name: ibge_populacao_estimada
+        description: "Estimativas populacionais IBGE por município SP 2015-2024"
