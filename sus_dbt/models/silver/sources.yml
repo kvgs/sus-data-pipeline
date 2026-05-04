@@ -25,3 +25,5 @@ sources:
         description: "Estimativas populacionais IBGE por município SP 2015-2024"
       - name: sinan_violencia
         description: "SINAN — notificações de violência SP 2015-2025"
+      - name: pnadc_sp
+        description: "PNADC microdados SP 2015-2023 trimestre 1"
