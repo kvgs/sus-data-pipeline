@@ -1,70 +1,82 @@
 # 🧠 Pipeline de Dados em Saúde Mental — SUS/SP
 
-Pipeline completo de engenharia de dados para análise de saúde mental no estado de São Paulo, integrando seis fontes de dados públicos em uma arquitetura moderna com AWS e dbt.
+Pipeline completo de engenharia de dados para análise de saúde mental no estado de São Paulo, integrando nove fontes de dados públicos em uma arquitetura moderna com AWS S3, Athena e dbt.
+
+> **Repositório de análise:** [sus-saude-mental-analytics](https://github.com/kvgs/sus-saude-mental-analytics) — notebooks de análise exploratória, estatística e equidade que consomem os dados deste pipeline.
 
 ## 🏗️ Arquitetura
 ```
-DATASUS + IBGE (fontes)
+DATASUS + IBGE + SINAN + BigQuery/Base dos Dados
 ↓
-Python + PySUS + requests
-(ingestão automatizada)
+Python (PySUS, requests, google-cloud-bigquery)
+scripts de ingestão padronizados com IngestBase
 ↓
 AWS S3 (data lake)
-raw/sih/ · raw/cnes/ · raw/sim/ · raw/raas/ · raw/censo/ · raw/malha/
+raw/sih/ · raw/cnes/ · raw/sim/ · raw/raas/
+raw/censo/ · raw/ibge/ · raw/sinan/ · raw/pnadc/
 ↓
-AWS Athena
-(tabelas externas sobre parquet)
+AWS Athena (tabelas externas sobre parquet)
 ↓
-dbt (transformação)
-silver: limpeza e padronização
-gold: agregações, cruzamentos e taxas normalizadas
+dbt (transformação em camadas)
+silver: limpeza, padronização e enriquecimento
+gold:   agregações, cruzamentos e taxas normalizadas
+↓
+Apache Airflow (orquestração mensal)
 ```
 
 ## 📊 Fontes de Dados
 
 | Dataset | Descrição | Período | Volume |
 |---------|-----------|---------|--------|
-| **SIH/DATASUS** | Internações hospitalares psiquiátricas | 2018–2026 | ~830k internações |
+| **SIH/DATASUS** | Internações psiquiátricas (ESPEC=05 ou CID F*) | 2015–2025 | ~1.1M internações |
 | **CNES** | Estabelecimentos de saúde mental (CAPS, hospitais) | 2018–2025 | snapshot anual |
 | **SIM** | Óbitos por suicídio (CID X60–X84) | 2018–2024 | ~18k óbitos |
-| **RAAS Psicossocial** | Atendimentos ambulatoriais nos CAPS | 2018–2025 | ~33M atendimentos |
-| **Censo 2022 (IBGE)** | População e domicílios em favelas por município | 2022 | 645 municípios SP |
-| **Malha Municipal SP** | Shapefile dos municípios de SP | 2022 | 645 polígonos |
+| **RAAS** | Atendimentos ambulatoriais nos CAPS | 2018–2025 | ~33M atendimentos |
+| **Censo 2022 (IBGE)** | População, favelas e demografia por município | 2022 | 645 municípios SP |
+| **Estimativas Pop. IBGE** | População estimada por município por ano | 2015–2025 | 5.160 registros |
+| **SINAN Violência** | Notificações de violência doméstica e autoprovocada | 2015–2025 | ~1.18M notificações |
+| **PNADC (Base dos Dados)** | Microdados de renda, emprego e escolaridade SP | 2015–2023 | 358k registros |
+| **Censo 2022 Demográfico** | População por município, idade, sexo e raça | 2022 | 270k registros |
 
 ## 🗂️ Modelos dbt
 
-### Silver (limpeza e padronização)
-- `sih_internacoes` — internações hospitalares SP (todas)
-- `sih_internacoes_psiquiatria` — filtrado por ESPEC=05 ou CID F
-- `cnes_saude_mental` — estabelecimentos categorizados (CAPS, hospitais, serviços)
-- `sim_suicidios` — óbitos por suicídio com método classificado
-- `raas_atendimentos` — atendimentos ambulatoriais psicossociais
-- `censo_municipios` — população e vulnerabilidade por município
+### Silver (views — limpeza e padronização)
+| Modelo | Descrição |
+|--------|-----------|
+| `sih_internacoes_psiquiatria` | Internações filtradas por especialidade/CID psiquiátrico |
+| `cnes_saude_mental` | CAPS, hospitais e serviços categorizados |
+| `sim_suicidios` | Óbitos por suicídio com método classificado |
+| `raas_atendimentos` | Atendimentos CAPS com campos padronizados |
+| `censo_municipios` | População e % domicílios em favelas |
+| `ibge_populacao` | Estimativas populacionais + Censo 2022 + interpolação 2023 |
+| `sinan_violencia_silver` | Notificações com ano extraído de DT_NOTIFIC |
+| `pnadc_sp_silver` | Microdados PNADC com campos decodificados |
+| `censo_2022_demografico` | População por município, idade, sexo e raça |
 
-### Gold (tabelas analíticas)
-- `internacoes_por_ano` — internações psiquiátricas por ano
-- `internacoes_por_cid` — internações por diagnóstico e ano
-- `atendimentos_por_ano` — atendimentos CAPS por município e ano
-- `suicidios_por_ano` — óbitos por suicídio por município e ano
-- `caps_vs_internacoes` — infraestrutura vs volume de internações
-- `saude_mental_municipios` — **cruzamento completo** com taxas por 100k hab
+### Gold (tables — tabelas analíticas)
+| Modelo | Descrição |
+|--------|-----------|
+| `internacoes_por_ano` | Internações psiquiátricas por ano (2015–2025) |
+| `internacoes_por_cid` | Internações por diagnóstico e ano |
+| `atendimentos_por_ano` | Atendimentos CAPS por município e ano |
+| `suicidios_por_ano` | Óbitos por suicídio por município e ano |
+| `caps_vs_internacoes` | Infraestrutura vs volume de internações |
+| `violencia_por_ano` | Notificações de violência por ano |
+| `saude_mental_municipios` | **Modelo principal** — cruzamento completo com taxas por 100k hab normalizadas por população do ano correto |
 
-## 🔍 Principais Achados
+## ✅ Qualidade de Dados
 
-- **Queda de 28% nas internações em 2020** — serviços fecharam durante a pandemia
-- **2021: pico de óbitos** com 183k mortes — o pior ano da pandemia
-- **Média de internação psiquiátrica caiu** de 18.9 para 14.7 dias (2018–2026) — tendência de desinstitucionalização
-- **33M atendimentos ambulatoriais** em 2018–2025, com crescimento de 35% no período
-- **~4% dos atendimentos nos CAPS** são de pessoas em situação de rua
-- **Suicídio cresceu 32%** entre 2018 e 2022 (pico de 2.923 casos), com queda gradual nos anos seguintes (2.656 em 2024)
-- **Taxas normalizadas revelam** municípios com alta taxa de internação e baixa cobertura de CAPS — identificando lacunas na rede de saúde mental
+- **32 testes dbt** cobrindo modelos silver e gold (`not_null`, `unique`, `accepted_values`)
+- **Monitor de anomalias** — `monitor_qualidade.py` verifica inconsistências após cada ingestão
+- **Filtro de anos incompletos** — 2026 excluído automaticamente dos modelos gold
+- **Documentação automática** — `dbt docs generate` gera site com lineage graph
 
 ## 🛠️ Stack Tecnológica
 
-- **Linguagem:** Python (PySUS, boto3, pandas, requests, sidrapy)
-- **Cloud:** AWS (S3, Athena, IAM)
-- **Transformação:** dbt-athena
-- **Orquestração:** Apache Airflow (Docker)
+- **Linguagem:** Python 3.12 (PySUS, boto3, pandas, requests, google-cloud-bigquery)
+- **Cloud:** AWS (S3, Athena, IAM) + Google Cloud (BigQuery)
+- **Transformação:** dbt-athena 1.10
+- **Orquestração:** Apache Airflow (DAG mensal)
 - **Versionamento:** Git/GitHub
 
 ## 🚀 Como Reproduzir
@@ -72,6 +84,7 @@ gold: agregações, cruzamentos e taxas normalizadas
 ### Pré-requisitos
 - Python 3.12+
 - AWS CLI configurado com acesso a S3 e Athena
+- Google Cloud SDK com projeto configurado (para PNADC via Base dos Dados)
 - WSL2 (Windows) ou Linux
 
 ### Instalação
@@ -79,38 +92,58 @@ gold: agregações, cruzamentos e taxas normalizadas
 ```bash
 git clone https://github.com/kvgs/sus-data-pipeline
 cd sus-data-pipeline
-pip install pysus boto3 pandas requests sidrapy dbt-athena-community
+pip install -r requirements.txt
+cp .env.example .env  # configure suas credenciais
 ```
 
 ### Ingestão
 
 ```bash
-python3 ingest_sih.py    # SIH — internações
-python3 ingest_cnes.py   # CNES — estabelecimentos
-python3 ingest_sim.py    # SIM — óbitos
-python3 ingest_raas.py   # RAAS — atendimentos
-python3 ingest_censo.py  # Censo 2022 — população e vulnerabilidade
+python3 ingest_sih_historico.py       # SIH 2015-2017
+python3 ingest_populacao.py           # Estimativas populacionais IBGE
+python3 ingest_sinan_viol.py          # SINAN violência
+python3 ingest_pnadc.py               # PNADC via BigQuery
+python3 ingest_censo_demografico.py   # Censo 2022 demográfico
 ```
 
 ### Transformação
 
 ```bash
 cd sus_dbt
-dbt run
+dbt run        # roda todos os modelos
+dbt test       # roda os testes de qualidade
+dbt docs generate && dbt docs serve  # documentação
 ```
+
+### Monitoramento
+
+```bash
+python3 monitor_qualidade.py  # verifica anomalias nos dados
+```
+
+## 📁 Estrutura do Projeto
 
 ## 📁 Estrutura do Projeto
 ```
 sus-data-pipeline/
-├── dags/                    # DAGs do Airflow
-├── sus_dbt/                 # Projeto dbt
+├── dags/
+│   └── sus_pipeline_dag.py       # DAG Airflow — orquestração mensal
+├── sus_dbt/
 │   ├── models/
-│   │   ├── silver/          # Limpeza e padronização
-│   │   └── gold/            # Tabelas analíticas
-├── ingest_sih.py
-├── ingest_cnes.py
-├── ingest_sim.py
-├── ingest_raas.py
-├── ingest_censo.py
+│   │   ├── silver/               # Limpeza e padronização
+│   │   │   ├── schema.yml        # Testes e documentação
+│   │   │   └── *.sql
+│   │   └── gold/                 # Tabelas analíticas
+│   │       ├── schema.yml        # Testes e documentação
+│   │       └── *.sql
+│   └── dbt_project.yml
+├── ingest_base.py                # Classe base para ingestão
+├── ingest_sih_historico.py
+├── ingest_populacao.py
+├── ingest_sinan_viol.py
+├── ingest_pnadc.py
+├── ingest_censo_demografico.py
+├── monitor_qualidade.py          # Monitor de anomalias
+├── .env.example                  # Template de variáveis de ambiente
 └── README.md
 ```
