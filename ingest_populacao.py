@@ -1,50 +1,64 @@
 import requests
 import pandas as pd
-import boto3
-import time
 import os
+import time
+from ingest_base import IngestBase
 
-BUCKET = 'sus-data-pipeline-kvgs'
+class IngestPopulacao(IngestBase):
+    """Ingestão de estimativas populacionais IBGE por município SP."""
 
-print("Buscando municípios de SP...")
-municipios = requests.get(
-    "https://servicodados.ibge.gov.br/api/v1/localidades/estados/35/municipios"
-).json()
-ids = [str(m['id']) for m in municipios]
-print(f"{len(ids)} municípios encontrados.")
+    def __init__(self):
+        super().__init__(nome='ingest_populacao')
+        self.ids_municipios = []
+        self.df = None
+        self.anos = '2015|2016|2017|2018|2019|2020|2021|2022|2023|2024'
 
-anos = '2015|2016|2017|2018|2019|2020|2021|2022|2023|2024'
-resultados = []
+    def extrair(self):
+        self.logger.info("Buscando municípios de SP na API do IBGE...")
+        municipios = requests.get(
+            "https://servicodados.ibge.gov.br/api/v1/localidades/estados/35/municipios"
+        ).json()
+        self.ids_municipios = [str(m['id']) for m in municipios]
+        self.logger.info(f"{len(self.ids_municipios)} municípios encontrados")
 
-print("Buscando estimativas populacionais por ano...")
-for i in range(0, len(ids), 100):
-    lote = ','.join(ids[i:i+100])
-    url = f"https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/{anos}/variaveis/9324?localidades=N6[{lote}]"
-    r = requests.get(url, timeout=30)
-    if r.status_code == 200:
-        for var in r.json():
-            for resultado in var.get('resultados', []):
-                for serie in resultado.get('series', []):
-                    loc = serie['localidade']
-                    for ano, pop in serie['serie'].items():
-                        if pop:
-                            resultados.append({
-                                'cod_municipio': loc['id'],
-                                'municipio': loc['nome'].replace(' (SP)', ''),
-                                'ano': ano,
-                                'populacao_estimada': pop
-                            })
-    time.sleep(0.3)
-    print(f"  Lote {i//100 + 1}/{len(ids)//100 + 1} concluído...")
+    def transformar(self):
+        self.logger.info("Buscando estimativas populacionais por ano...")
+        resultados = []
 
-df = pd.DataFrame(resultados)
-print(f"\nTotal: {len(df)} registros")
-print(df.head())
+        for i in range(0, len(self.ids_municipios), 100):
+            lote = ','.join(self.ids_municipios[i:i+100])
+            url = (
+                f"https://servicodados.ibge.gov.br/api/v3/agregados/6579"
+                f"/periodos/{self.anos}/variaveis/9324"
+                f"?localidades=N6[{lote}]"
+            )
+            r = requests.get(url, timeout=30)
+            if r.status_code == 200:
+                for var in r.json():
+                    for resultado in var.get('resultados', []):
+                        for serie in resultado.get('series', []):
+                            loc = serie['localidade']
+                            for ano, pop in serie['serie'].items():
+                                if pop:
+                                    resultados.append({
+                                        'cod_municipio': loc['id'],
+                                        'municipio': loc['nome'].replace(' (SP)', ''),
+                                        'ano': ano,
+                                        'populacao_estimada': pop
+                                    })
+            time.sleep(0.3)
+            self.logger.info(f"  Lote {i//100 + 1}/{len(self.ids_municipios)//100 + 1} concluído")
 
-os.makedirs('/tmp/pop_raw', exist_ok=True)
-path = '/tmp/pop_raw/estimativas_populacionais_sp.parquet'
-df.to_parquet(path, index=False)
+        self.df = pd.DataFrame(resultados)
+        self.registros_processados = len(self.df)
+        self.logger.info(f"{self.registros_processados:,} registros transformados")
 
-s3 = boto3.client('s3')
-s3.upload_file(path, BUCKET, 'raw/ibge/populacao/estimativas_populacionais_sp.parquet')
-print("✅ Enviado para S3!")
+    def carregar(self):
+        os.makedirs('/tmp/pop_raw', exist_ok=True)
+        path = '/tmp/pop_raw/estimativas_populacionais_sp.parquet'
+        self.df.to_parquet(path, index=False)
+        self.upload_s3(path, 'raw/ibge/populacao/estimativas_populacionais_sp.parquet')
+
+
+if __name__ == '__main__':
+    IngestPopulacao().executar()

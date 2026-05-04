@@ -1,45 +1,53 @@
 import os
-from google.cloud import bigquery
-import pandas as pd
 import boto3
+from google.cloud import bigquery
+from ingest_base import IngestBase
 
-BUCKET = 'sus-data-pipeline-kvgs'
+class IngestPNADC(IngestBase):
+    """Ingestão de microdados PNADC SP 2015-2023 via BigQuery/Base dos Dados."""
 
-client = bigquery.Client(project='sus-saude-mental')
+    DATA_DIR = '/tmp/pnadc'
+    ANOS = '2015 AND 2023'
 
-print("Baixando microdados PNADC SP 2015-2023...")
+    def __init__(self):
+        super().__init__(nome='ingest_pnadc')
+        self.client = bigquery.Client(project='sus-saude-mental')
+        self.df = None
 
-query = """
-    SELECT
-        ano,
-        trimestre,
-        sigla_uf,
-        V2007    AS sexo,
-        V2009    AS idade,
-        V2010    AS raca_cor,
-        VD3004   AS nivel_instrucao,
-        VD3005   AS anos_estudo,
-        VD4001   AS condicao_forca_trabalho,
-        VD4002   AS condicao_ocupacao,
-        VD4016   AS renda_trabalho_principal,
-        VD4019   AS renda_todos_trabalhos,
-        V1022    AS situacao_domicilio,
-        V1028    AS peso_amostral
-    FROM basedosdados.br_ibge_pnadc.microdados
-    WHERE sigla_uf = 'SP'
-    AND ano BETWEEN 2015 AND 2023
-    AND trimestre = 1
-"""
+    def extrair(self):
+        self.logger.info("Consultando microdados PNADC SP no BigQuery...")
+        query = f"""
+            SELECT
+                ano, trimestre, sigla_uf,
+                V2007    AS sexo,
+                V2009    AS idade,
+                V2010    AS raca_cor,
+                VD3004   AS nivel_instrucao,
+                VD3005   AS anos_estudo,
+                VD4001   AS condicao_forca_trabalho,
+                VD4002   AS condicao_ocupacao,
+                VD4016   AS renda_trabalho_principal,
+                VD4019   AS renda_todos_trabalhos,
+                V1022    AS situacao_domicilio,
+                V1028    AS peso_amostral
+            FROM basedosdados.br_ibge_pnadc.microdados
+            WHERE sigla_uf = 'SP'
+            AND ano BETWEEN {self.ANOS}
+            AND trimestre = 1
+        """
+        self.df = self.client.query(query).to_dataframe()
+        self.registros_processados = len(self.df)
+        self.logger.info(f"{self.registros_processados:,} registros extraídos")
 
-print("Rodando query no BigQuery...")
-df = client.query(query).to_dataframe()
-print(f"✅ {len(df):,} registros baixados")
-print(df.head())
+    def transformar(self):
+        self.logger.info("Dados prontos — sem transformações adicionais")
 
-os.makedirs('/tmp/pnadc', exist_ok=True)
-path = '/tmp/pnadc/pnadc_sp_2015_2023.parquet'
-df.to_parquet(path, index=False)
+    def carregar(self):
+        os.makedirs(self.DATA_DIR, exist_ok=True)
+        path = f'{self.DATA_DIR}/pnadc_sp_2015_2023.parquet'
+        self.df.to_parquet(path, index=False)
+        self.upload_s3(path, 'raw/pnadc/pnadc_sp_2015_2023.parquet')
 
-s3 = boto3.client('s3')
-s3.upload_file(path, BUCKET, 'raw/pnadc/pnadc_sp_2015_2023.parquet')
-print("✅ Enviado para S3!")
+
+if __name__ == '__main__':
+    IngestPNADC().executar()
