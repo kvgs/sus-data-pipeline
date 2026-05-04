@@ -2,20 +2,24 @@ import boto3
 import logging
 import os
 import time
-from datetime import datetime
 from abc import ABC, abstractmethod
+from dotenv import load_dotenv
 
-# configuração de logging estruturado
+load_dotenv()
+
+BUCKET_DEFAULT = os.getenv('AWS_S3_BUCKET', 'sus-data-pipeline-kvgs')
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s | %(levelname)s | %(name)s | %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
+
 class IngestBase(ABC):
     """Classe base para scripts de ingestão do pipeline SUS."""
 
-    def __init__(self, nome: str, bucket: str = 'sus-data-pipeline-kvgs'):
+    def __init__(self, nome: str, bucket: str = BUCKET_DEFAULT):
         self.nome = nome
         self.bucket = bucket
         self.s3 = boto3.client('s3')
@@ -39,17 +43,14 @@ class IngestBase(ABC):
 
     @abstractmethod
     def extrair(self):
-        """Extrai dados da fonte."""
         pass
 
     @abstractmethod
     def transformar(self):
-        """Transforma e limpa os dados."""
         pass
 
     @abstractmethod
     def carregar(self):
-        """Carrega os dados no S3."""
         pass
 
     def upload_s3(self, path_local: str, chave_s3: str):
@@ -58,19 +59,22 @@ class IngestBase(ABC):
             try:
                 self.s3.upload_file(path_local, self.bucket, chave_s3)
                 tamanho = os.path.getsize(path_local) / 1024 / 1024
-                self.logger.info(f"Enviado: s3://{self.bucket}/{chave_s3} ({tamanho:.1f} MB)")
+                self.logger.info(
+                    f"Enviado: s3://{self.bucket}/{chave_s3} ({tamanho:.1f} MB)"
+                )
                 self.arquivos_enviados += 1
                 return
             except Exception as e:
                 if tentativa < 2:
-                    self.logger.warning(f"Tentativa {tentativa+1} falhou: {e}. Retentando...")
+                    self.logger.warning(
+                        f"Tentativa {tentativa+1} falhou: {e}. Retentando em 5s..."
+                    )
                     time.sleep(5)
                 else:
                     self.logger.error(f"Falha após 3 tentativas: {chave_s3}")
                     raise
 
     def _resumo(self):
-        """Loga resumo da execução."""
         duracao = time.time() - self.inicio
         self.logger.info(
             f"Ingestão concluída | "
@@ -78,4 +82,3 @@ class IngestBase(ABC):
             f"arquivos={self.arquivos_enviados} | "
             f"duração={duracao:.1f}s"
         )
-        
