@@ -122,8 +122,6 @@ python3 monitor_qualidade.py  # verifica anomalias nos dados
 ```
 
 ## 📁 Estrutura do Projeto
-
-## 📁 Estrutura do Projeto
 ```
 sus-data-pipeline/
 ├── dags/
