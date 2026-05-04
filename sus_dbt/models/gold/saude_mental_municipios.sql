@@ -5,11 +5,12 @@ WITH internacoes AS (
         cod_municipio_internacao    AS cod_municipio,
         ano,
         COUNT(*)                   AS total_internacoes,
-        SUM(obito)                 AS total_obitos,
+        SUM(obito)          AS total_obitos,
         ROUND(AVG(CASE WHEN dias_internacao > 0
             THEN dias_internacao END), 1) AS media_dias_internacao,
         ROUND(AVG(valor_total), 2) AS valor_medio_internacao
     FROM {{ ref('sih_internacoes_psiquiatria') }}
+    WHERE ano NOT IN ('2026')
     GROUP BY cod_municipio_internacao, ano
 ),
 

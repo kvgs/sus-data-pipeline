@@ -14,5 +14,6 @@ SELECT
     COUNT(CASE WHEN sexo = '1' THEN 1 END)          AS total_masculino,
     COUNT(CASE WHEN sexo = '3' THEN 1 END)          AS total_feminino
 FROM {{ ref('sih_internacoes_psiquiatria') }}
+WHERE ano NOT IN ('2026')
 GROUP BY ano
 ORDER BY ano
